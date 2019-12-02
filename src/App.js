@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import Users from './Components/Users'
+import Main from './Components/Main'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-function App() {
+import socketIOClient from 'socket.io-client'
+const socket = socketIOClient('localhost:5000');
+
+function App(){
+  const [user_list, setUsers_list] = useState([])
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+     fetch('http://localhost:5000/user')
+        .then(res => res.json())
+        .then(res => {
+          setUsers_list(res.result)
+        })
+        .catch(e => {
+           console.log('Error: ', e)
+        })
+  }, [])
+
+  const handleJoin = (e) => {
+    socket.emit('join', e)
+    setUser({name: e.name, image: e.image})
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Route exact path='/' render={(routeProps) => <Users  user_list={user_list} handleJoin={handleJoin} {...routeProps}/>}/>
+      <Route path='/chat' render={routeProps => <Main user_list={user_list} userData={user}  {...routeProps} />}  />
+    </Router>
+  )
 }
-
-export default App;
+export default App

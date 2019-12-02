@@ -1,0 +1,37 @@
+.message-joined {
+   color: rgba(0, 0, 0, 0.5);
+   font-style: italic
+}
+
+.bubble-right {
+    line-height: 100%;
+    display: block;
+    position: relative;
+    padding: .25em .5em;
+    background: rgb(0, 153, 255);
+    border: rgb(0, 153, 255) solid 3px;
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    margin-bottom: 2em;
+    clear: both;
+    max-width:50%;
+}
+
+.bubble-left {
+    float: left;       
+    margin-right:10%;
+}
+.bubble-right {
+    float:right;
+    margin-left:10%
+}
+
+hr {
+   display: block;
+   height: 1px;
+   border: 0;
+   border-top: 1px solid #ccc;
+   margin: 1em 0;
+   padding: 0;
+}
