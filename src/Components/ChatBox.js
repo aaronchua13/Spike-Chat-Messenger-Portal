@@ -8,7 +8,6 @@ function ChatBox(props){
          {
             data.map((e, i) => {
                const isMine = userData.socket_id === e.socket_id
-               console.log('asdasd', {userData, e})
                return (
                   <div className='chat-message' key={`${e.socket_id} + ${i}`}>
                      {
@@ -20,6 +19,9 @@ function ChatBox(props){
                         </div> : <div className={`${isMine ? 'bubble-right' : ''}`}>
                            {e.message}
                      </div>
+                     }
+                     {
+                        !!e.file && <img src={e.file} alt={e.file_name}/>
                      }
                   </div>
                )

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Users from './Components/Users'
 import Main from './Components/Main'
+import Views from './Components/Views'
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import socketIOClient from 'socket.io-client'
@@ -30,6 +32,7 @@ function App(){
     <Router>
       <Route exact path='/' render={(routeProps) => <Users  user_list={user_list} handleJoin={handleJoin} {...routeProps}/>}/>
       <Route path='/chat' render={routeProps => <Main user_list={user_list} userData={user}  {...routeProps} />}  />
+      <Route path='/views' component={Views} />
     </Router>
   )
 }

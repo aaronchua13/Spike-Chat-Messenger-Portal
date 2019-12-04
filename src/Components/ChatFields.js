@@ -6,6 +6,7 @@ import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid'
 import moment from 'moment'
 import socketIOClient from "socket.io-client";
+import { read } from 'fs';
 const socket = socketIOClient('localhost:5000')
 
 const useStyles = makeStyles(theme => ({
@@ -23,8 +24,15 @@ const useStyles = makeStyles(theme => ({
 function ChatFields(props){
    const classes = useStyles()
    const [text, setText] = useState('')
-   const {onSend, userData = {}, typingData: {isTyping, name, socket_id}} = props
-   
+   const {
+      onSend,
+      onUpload,
+      userData = {}, 
+      typingData: {isTyping, name, socket_id}
+   } = props
+
+   const [images, setImages] = useState([])
+
    const handleChange = (evt) => {
       const { value, id } = evt.target ? evt.target : {}
       setText(value)
@@ -35,12 +43,26 @@ function ChatFields(props){
    }
 
    const handleSubmit = () => {
-      onSend({ message: text, date: moment().toISOString()})    
+      onSend({ message: text, date: moment().toISOString()})   
+      if(images.length) {
+         onUpload(images)
+      }
+      setImages([])
       setText('')
    }
-   console.log({props})
+   const handleImageInput = (e) => {
+      setImages(e.target.files)
+   }
    return (
     <div>
+      {
+         !!images.length && Array.from(images).map(e => {
+            const reader = new FileReader();
+            return <div style={{ padding: '2px' }}>
+               <img src={URL.createObjectURL(e)} alt={e.name} height={80} width={80}/>
+            </div>
+         })  
+      }
       <Grid container spacing={2} >
          <Grid item xs={12} sm={8}>
             <div className='chat-message'>
@@ -80,7 +102,7 @@ function ChatFields(props){
                id="contained-button-file"
                multiple
                type="file"
-               // onChange={}
+               onChange={handleImageInput}
             />
          </Grid>
       </Grid>
