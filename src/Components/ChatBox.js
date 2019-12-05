@@ -21,7 +21,7 @@ function ChatBox(props){
                      </div>
                      }
                      {
-                        !!e.file && <img src={e.file} alt={e.file_name}/>
+                        !!e.file && <img src={e.file} alt={e.file_name} height={200} width={200}/>
                      }
                   </div>
                )
